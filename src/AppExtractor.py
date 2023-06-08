@@ -9,6 +9,10 @@ import re
 def BoldMatches(sentence, matches):
     return sentence.replace(matches, "<b>"+matches+"</b>")
 
+# Underlining matched words
+def UnderlineMatches(sentence, matches):
+    return sentence.replace(matches, "<u>"+matches+"</u>")
+
 # Extraction process from file input
 def BeginExtraction(keyword, method, file, text):
     # Main
@@ -39,9 +43,9 @@ def BeginExtraction(keyword, method, file, text):
             jumlah = FindNumber(sentencePattern[j])
             tanggal = FindDate(sentencePattern[j])
             if not(jumlah == "Unknown"):
-                sentencePattern[j] = BoldMatches(sentencePattern[j],jumlah)
+                sentencePattern[j] = UnderlineMatches(sentencePattern[j], jumlah)
             if not(tanggal == "Unknown"):
-                sentencePattern[j] = BoldMatches(sentencePattern[j],jumlah)
+                sentencePattern[j] = UnderlineMatches(sentencePattern[j], jumlah)
             else:
                 tanggal = articleDate
                 
