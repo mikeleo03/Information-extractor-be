@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request, abort
 from flask_cors import CORS, cross_origin
+from gevent.pywsgi import WSGIServer
 import matcher as matcher
 
 app = Flask(__name__)
@@ -80,7 +81,10 @@ def extract_information():
         extraction['data'].append(filedata)
 
     return jsonify({"result": extraction})
-
-
+    
 if __name__ == '__main__':
-    app.run(debug=True)
+    # Debug/Development
+    # app.run(debug=True, host="0.0.0.0", port="5000")
+    # Production
+    http_server = WSGIServer(('', 5000), app)
+    http_server.serve_forever()
