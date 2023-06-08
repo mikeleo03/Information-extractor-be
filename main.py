@@ -1,21 +1,24 @@
 from flask import Flask, jsonify, request, abort
 from flask_cors import CORS, cross_origin
+from src.AppExtractor import *
 import os
-import matcher as matcher
 
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 data = {}
+# Main pages
+@app.route("/", methods=["POST","GET"])
 
+# Keyword gather
 @app.route('/api/keyword', methods=['GET'])
 @cross_origin()
 def get_keyword():
     global data
     return jsonify(data)
 
-
+# Search post process
 @app.route('/api/search', methods=['POST'])
 @cross_origin()
 def search_keywords():
@@ -31,7 +34,7 @@ def search_keywords():
     print(data)
     return jsonify({'result': data}), 201
 
-
+# Information extraction process
 @app.route('/api/extract_information', methods=['GET'])
 @cross_origin()
 def extract_information():
@@ -44,41 +47,7 @@ def extract_information():
     }
 
     for file in data['data']:
-        filedata = {}
-        filedata['filename'] = file['filename']
-
-        parsed_content = file['content'].split('\n')
-        
-        print(parsed_content)
-
-        filedata['title'] = parsed_content[0]
-        filedata['date'] = parsed_content[1]
-        filedata['content'] = parsed_content[2]
-
-        information = []
-
-        for sentence in matcher.split_to_sentences(file['content']):
-            # Algorirgm choosing
-            if (data['algorithm'] == "Regex"):
-                sentence_html, sentence_date, sentence_count = matcher.extract_sentence_information(
-                    sentence, data['keyword'].lower(), matcher.regex_matching)
-            elif (data['algorithm'] == "KMP"):
-                sentence_html, sentence_date, sentence_count = matcher.extract_sentence_information(
-                    sentence, data['keyword'].lower(), matcher.knuth_morris_pratt)
-            elif (data['algorithm'] == "BM"):
-                sentence_html, sentence_date, sentence_count = matcher.extract_sentence_information(
-                    sentence, data['keyword'].lower(), matcher.boyer_moore)
-                
-            # Output expected
-            if(sentence_date == ""):
-                sentence_date = filedata['date']
-            if(sentence_count == ""):
-                sentence_count = "Unknown"
-            information.append([sentence_html, sentence_date, sentence_count])
-
-        filedata['highlightedContent'] = information
-
-        extraction['data'].append(filedata)
+        extraction['data'].append(BeginExtraction(data['keyword'], data['algorithm'], file['filename'], file['content']))
 
     return jsonify({"result": extraction})
     
