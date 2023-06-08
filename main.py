@@ -82,5 +82,5 @@ def extract_information():
 
     return jsonify({"result": extraction})
     
-iif __name__ == '__main__':
+if __name__ == '__main__':
     app.run(debug=True, port=os.getenv("PORT", default=5000))
