@@ -1,6 +1,9 @@
 from nltk.tokenize import sent_tokenize, word_tokenize
 import re
 
+import nltk
+nltk.download('punkt')
+
 # Regular Expression dictionary
 countAble= '(?:kasus|orang|manusia|korban|jiwa|pasien|meninggal|sembuh|kematian)'
 numberFirstFormat = "(?:(?:\d{1,3}\.?)*(?:\d+) %s)" % (countAble)
