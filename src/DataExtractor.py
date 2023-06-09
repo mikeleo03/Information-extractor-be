@@ -5,11 +5,14 @@ import nltk
 nltk.download('punkt')
 
 # Regular Expression dictionary
-countAble= '(?:kasus|orang|manusia|korban|jiwa|pasien|meninggal|sembuh|kematian)'
+countAble= '(?:kasus|orang|manusia|korban|jiwa|pasien|meninggal|sembuh|kematian|mobil|motor|truk|kendaraan|penumpang)'
 numberFirstFormat = "(?:(?:\d{1,3}\.?)*(?:\d+) %s)" % (countAble)
 numberEnum = '(?:satu|dua|tiga|empat|lima|enam|tujuh|delapan|sembilan|sepuluh|puluh|ribu|juta)'
 numberSecondFormat = "(?:(?:%s )+%s %s)" % (numberEnum, numberEnum, countAble)
-genericNumber = re.compile("(?:%s|%s)" % (numberFirstFormat, numberSecondFormat))
+numberThirdFormat = "(?:(?:\d{1,3}\.?)*(?:\d+) %s %s)" % (numberEnum, countAble)
+numberFourthFormat = "(?:%s (?:\d{1,3}\.?)*(?:\d+) %s)" % (numberEnum, countAble)
+numberFifthFormat = "(?:(?:\d{1,3}\.?)*(?:\d+) %s)" % (numberEnum)
+genericNumber = re.compile("(?:%s|%s|%s|%s|%s)" % (numberFirstFormat, numberSecondFormat, numberThirdFormat, numberFourthFormat, numberFifthFormat))
 
 # Construct Format for Date
 datenum = '(?:\d{1,2})'
@@ -33,7 +36,6 @@ dateTimeFull = "(?:%s,? (?:%s|%s))" % (dateFirstFormat, timeFirstFormat, timeSec
 genericDate = "(?:%s|%s|%s)" % (dateFirstFormat, dateSecondFormat, dateThirdFormat)
 genericTime = "(?:%s|%s|%s)" % (timeFirstFormat, timeSecondFormat, timeThirdFormat)
 genericDateTime = re.compile("(?:%s|%s|%s)" % (dateTimeFull,genericDate, genericTime))
-
 
 # Return string from a fileName
 def ReadText(fileName):

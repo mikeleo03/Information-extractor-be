@@ -45,7 +45,7 @@ def BeginExtraction(keyword, method, file, text):
             if not(jumlah == "Unknown"):
                 sentencePattern[j] = UnderlineMatches(sentencePattern[j], jumlah)
             if not(tanggal == "Unknown"):
-                sentencePattern[j] = UnderlineMatches(sentencePattern[j], jumlah)
+                sentencePattern[j] = UnderlineMatches(sentencePattern[j], tanggal)
             else:
                 tanggal = articleDate
                 
